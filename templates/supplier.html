@@ -1,0 +1,4 @@
+{% extends "base.html" %}{% block body %}<h1>{{ s.name }}</h1><p class="mut">{{ s.city }} · {{ s.phone }} · GSTIN {{ s.gstin }} · {{ s.rating }}★</p>
+<h2>Listings and prices</h2>{% if not rows %}<p>No listings yet.</p>{% endif %}
+<div class="tw"><table><tr><th>Product</th><th>Update price (₹ per unit)</th><th class="num">Stock</th></tr>
+{% for r in rows %}<tr><td>{{ r.product }}<br><span class="tag">{{ r.category }}</span></td><td><form method="post" style="display:flex;gap:8px"><input type="hidden" name="listing" value="{{ r.id }}"><input name="price" type="number" step="0.01" value="{{ r.price }}"><button>Save price</button></form></td><td class="num">{{ r.stock }}</td></tr>{% endfor %}</table></div>{% endblock %}

@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% block body %}<h1>Bulk order: {{ l.product }}</h1><img src="{{ img(l) }}" alt="{{ l.product }}" width="240" style="border-radius:6px;max-width:100%">
+<p class="mut">{{ l.sname }}, {{ l.scity }} · ₹{{ '{:,.0f}'.format(l.price) }} per {{ unit }} · minimum {{ l.min_qty }} · {{ l.stock }} in stock</p>
+<p>Discounts: 3% at {{ l.min_qty*5 }}+ units, 5% at {{ l.min_qty*10 }}+ units. GST is added at checkout.</p>
+<form class="f" method="post"><label>Quantity ({{ unit }}s)<input id="qty" name="qty" type="number" min="{{ l.min_qty }}" max="{{ l.stock }}" value="{{ l.min_qty }}" required></label>
+<label>Delivery address<textarea name="address" required rows="3"></textarea></label><label>City<input name="city" required></label>
+<p>Estimated total before GST: <b id="est"></b></p><button>Place order</button></form>
+<script>const q=document.getElementById('qty'),e=document.getElementById('est'),P={{ l.price }},M={{ l.min_qty }};
+function u(){const n=+q.value||0,r=n/M,d=r>=10?.05:r>=5?.03:0;e.textContent='₹'+(n*P*(1-d)).toLocaleString('en-IN',{maximumFractionDigits:0})}q.oninput=u;u()</script>{% endblock %}

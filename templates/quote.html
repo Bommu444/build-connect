@@ -1,0 +1,4 @@
+{% extends "base.html" %}{% block body %}<h1>Request a quote</h1><p class="mut">Need a large or custom quantity? Post it and suppliers can bid.</p>
+<form class="f" method="post"><label>Material<select name="category">{% for c in cats %}<option>{{ c }}</option>{% endfor %}</select></label><label>Quantity<input name="qty" type="number" min="1" required></label>
+<label>Delivery city<input name="city" required></label><label>Notes<textarea name="note" rows="3"></textarea></label><button>Post request</button></form>
+{% if mine %}<h2>Your requests</h2><ul>{% for m in mine %}<li>{{ m.qty }} × {{ m.category }} to {{ m.city }} ({{ m.created }})</li>{% endfor %}</ul>{% endif %}{% endblock %}

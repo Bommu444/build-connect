@@ -1,0 +1,5 @@
+{% extends "base.html" %}{% block body %}<h1>Order {{ o.code }}</h1><p class="mut">{{ o.qty }} × {{ o.product }} from {{ o.sname }} → {{ o.city }}</p>
+<ol class="steps">{% for s in stages %}<li class="{{ 'done' if loop.index0 <= o.stage }} {{ 'cur' if loop.index0 == o.stage }}">{{ s }}</li>{% endfor %}</ol>
+<ul>{% for e in events %}<li>{{ e.at }}: {{ e.note }}</li>{% endfor %}</ul>
+<p class="noprint"><a class="btn alt" href="/invoice/{{ o.code }}">View invoice</a>
+{% if o.stage < stages|length - 1 %}<form method="post" action="/track/{{ o.code }}/advance" style="display:inline"><button>Move to “{{ stages[o.stage+1] }}” (demo)</button></form>{% endif %}</p>{% endblock %}

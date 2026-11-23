@@ -1,0 +1,14 @@
+{% extends "base.html" %}{% block body %}
+<h1>Construction materials, priced today</h1><p class="mut">Compare supplier prices for cement, steel, bricks and sand. Larger orders get automatic discounts.</p>
+<form class="search" method="get"><input name="q" value="{{ s }}" placeholder="Search product, supplier or city"><input type="hidden" name="cat" value="{{ cat }}">
+<select name="sort" aria-label="Sort"><option value="price" {{ 'selected' if srt=='price' }}>Lowest price</option><option value="rating" {{ 'selected' if srt=='rating' }}>Best rated</option><option value="stock" {{ 'selected' if srt=='stock' }}>Most stock</option></select><button>Search</button></form>
+<div class="tabs"><a href="/" class="{{ 'on' if not cat }}">All</a>{% for c in cats %}<a href="/?cat={{ c }}" class="{{ 'on' if cat==c }}">{{ c }}</a>{% endfor %}</div>
+{% if not rows %}<p>No materials match. Clear the search or <a href="/quote">request a quote</a>.</p>{% else %}
+<div class="tw"><table><tr><th></th><th>Product</th><th>Supplier</th><th class="num">Price</th><th>7-day trend</th><th class="num">Min order</th><th class="num">In stock</th><th></th></tr>
+{% for r in rows %}{% set h = hist[r.id] %}{% set lo = h|min %}{% set hi = h|max %}
+<tr><td><img src="{{ img(r) }}" alt="{{ r.product }}" width="72" height="54" style="border-radius:4px;object-fit:cover"></td><td><b>{{ r.product }}</b><br><span class="tag">{{ r.category }}</span></td>
+<td><a href="/supplier/{{ r.supplier_id }}">{{ r.sname }}</a>{% if r.verified %} <span class="ok" title="Verified">✓</span>{% endif %}<br><span class="mut">{{ r.city }} · {{ r.rating }}★</span></td>
+<td class="num"><b>₹{{ '{:,.0f}'.format(r.price) }}</b><br><span class="mut">per {{ units[r.category] }}</span></td>
+<td><svg class="sp" viewBox="0 0 70 22" role="img" aria-label="Price trend"><polyline fill="none" stroke="currentColor" stroke-width="2" points="{% for p in h %}{{ loop.index0 * 70 / ((h|length - 1) or 1) }},{{ 20 - ((p - lo) / ((hi - lo) or 1)) * 18 }} {% endfor %}"/></svg></td>
+<td class="num">{{ r.min_qty }}</td><td class="num">{{ r.stock }}</td><td><a class="btn" href="/order/{{ r.id }}">Order in bulk</a></td></tr>{% endfor %}</table></div>{% endif %}
+{% endblock %}

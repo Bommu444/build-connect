@@ -1,0 +1,6 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BuildConnect</title><link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"></head><body>
+<header><div class="bar"><a class="logo" href="/">Build<b>Connect</b></a>
+<nav><a href="/">Materials</a><a href="/quote">Request a quote</a><a href="/orders">My orders</a><a href="/track">Track delivery</a><a href="/supplier/register">Sell on BuildConnect</a></nav>
+<span class="who">Browsing as {{ session.user }}</span></div></header>
+<main>{% for m in get_flashed_messages() %}<div class="flash">{{ m }}</div>{% endfor %}{% block body %}{% endblock %}</main></body></html>
