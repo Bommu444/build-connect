@@ -3,9 +3,6 @@ on:
   push:
     branches:
       - main
-    
-env:
-  IMAGE_REPOSITORY: 850995567794.dkr.ecr.us-west-2.amazonaws.com
 
 jobs:
   build:
@@ -48,7 +45,7 @@ jobs:
           port: 22
           key: ${{ secrets.KEY }}
           script:
-            aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin ${{ env.IMAGE_REPOSITORY }} 
-            docker push ${{ env.IMAGE_REPOSITORY }}/ganesh-dockerproject:${{ github.sha }}
+            aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 850995567794.dkr.ecr.us-west-2.amazonaws.com
+            docker push 850995567794.dkr.ecr.us-west-2.amazonaws.com/ganesh-dockerproject:${{ github.sha }}
             docker rm -f build-connect
-            docker run -itd -p 8000:8080 --name build-connect ${{ env.IMAGE_REPOSITORY }}/ganesh-dockerproject:${{ github.sha }}   
+            docker run -itd -p 8000:8080 --name build-connect 850995567794.dkr.ecr.us-west-2.amazonaws.com/ganesh-dockerproject:${{ github.sha }}   
